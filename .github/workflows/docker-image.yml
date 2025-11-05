@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: cms-inneo
 
 on:
   push:
@@ -26,4 +26,4 @@ jobs:
           context: .
           push: true
           tags: |
-            inneobr/graph:latest
+            inneobr/cms-inneo:latest
