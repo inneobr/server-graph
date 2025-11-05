@@ -10,7 +10,17 @@ async function startServer() {
     context: ({ req }) => {
       const authHeader = req.headers.authorization || "";
       const token = authHeader.replace("Bearer ", "");
-      const user = verifyToken(token);
+    
+      let user = null;
+      if (token) {
+        try {
+          user = verifyToken(token);
+        } catch (err) {
+          console.warn("Token inválido:", err);
+          user = null; 
+        }
+      }
+    
       return { user };
     },
     formatError: (err) => {
