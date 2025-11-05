@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  graphql:
+    build: .
+    container_name: graphql
+    ports:
+      - "9001:3000"
+    environment:
+      - DATABASE_HOSTNAME=${DATABASE_HOSTNAME}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_USERNAME=${DATABASE_USERNAME}
+    networks:
+      - producao
+
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M  
+
+networks:
+  producao:          
