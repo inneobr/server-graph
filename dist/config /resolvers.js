@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.resolvers = void 0;
 // resolvers.ts
 const source_1 = require("./source");
+const bcrypt = require('bcryptjs');
 const oracledb_1 = __importDefault(require("oracledb"));
 exports.resolvers = {
     Query: {
@@ -34,19 +35,19 @@ exports.resolvers = {
         createUsuario: async (_parent, args) => {
             const { FULLNAME, USERNAME, PASSWORD, EMAIL, PHONE, CIDADE } = args.input;
             const conn = await (0, source_1.getConnection)();
+            const CRIPTPASS = bcrypt.hashSync(PASSWORD, 10);
             try {
                 const result = await conn.execute(`INSERT INTO USUARIO (ID, FULLNAME, USERNAME, PASSWORD, EMAIL, PHONE, CIDADE)
-                    VALUES (SEQ_USUARIO.NEXTVAL, :FULLNAME, :USERNAME, :PASSWORD, :EMAIL, :PHONE, :CIDADE)
+                    VALUES (SEQ_USUARIO.NEXTVAL, :FULLNAME, :USERNAME, :CRIPTPASS, :EMAIL, :PHONE, :CIDADE)
                     RETURNING ID INTO :ID`, {
                     FULLNAME,
                     USERNAME,
-                    PASSWORD,
+                    CRIPTPASS,
                     EMAIL,
                     PHONE,
                     CIDADE,
                     ID: { dir: oracledb_1.default.BIND_OUT, type: oracledb_1.default.NUMBER },
                 }, { autoCommit: true });
-                // Type assertion: dizemos ao TypeScript que outBinds é do tipo esperado
                 const outBinds = result.outBinds;
                 return {
                     ID: outBinds.ID[0],
@@ -71,11 +72,18 @@ exports.resolvers = {
             try {
                 const updates = [];
                 const bindParams = { id };
-                // Monta dinamicamente os campos que serão atualizados
                 for (const [key, value] of Object.entries(input)) {
                     if (value !== undefined) {
-                        updates.push(`${key} = :${key}`);
-                        bindParams[key] = value;
+                        if (key === "PASSWORD") {
+                            // Criptografa a senha antes de atualizar
+                            const CRIPTPASS = bcrypt.hashSync(value, 10);
+                            updates.push(`${key} = :${key}`);
+                            bindParams[key] = CRIPTPASS;
+                        }
+                        else {
+                            updates.push(`${key} = :${key}`);
+                            bindParams[key] = value;
+                        }
                     }
                 }
                 if (updates.length === 0) {
@@ -83,7 +91,6 @@ exports.resolvers = {
                 }
                 const sql = `UPDATE USUARIO SET ${updates.join(", ")} WHERE ID = :id`;
                 await conn.execute(sql, bindParams, { autoCommit: true });
-                // Retorna o usuário atualizado
                 const result = await conn.execute(`SELECT * FROM USUARIO WHERE ID = :id`, { id }, { outFormat: oracledb_1.default.OUT_FORMAT_OBJECT });
                 return result.rows && result.rows[0] ? result.rows[0] : null;
             }

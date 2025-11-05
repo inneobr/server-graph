@@ -20,6 +20,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/oracledb": "^6.10.0",
     "apollo-server": "^3.13.0",
     "graphql": "^16.12.0",
@@ -27,7 +28,10 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^3.0.3",
     "dotenv": "^17.2.3",
+    "jsonwebtoken": "^9.0.2",
     "oracledb": "^6.10.0"
   }
 }

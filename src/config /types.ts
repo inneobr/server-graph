@@ -1,4 +1,3 @@
-// types.ts
 import { gql } from 'graphql-tag';
 
 export const typeDefs = gql`
@@ -6,21 +5,20 @@ export const typeDefs = gql`
     ID: Int
     FULLNAME: String!
     USERNAME: String!
-    EMAIL:  String
-    PHONE:  String 
+    EMAIL: String
+    PHONE: String
     CIDADE: Int
-  }    
+  }
 
   input CreateUsuario {
     FULLNAME: String!
     USERNAME: String!
     PASSWORD: String!
     EMAIL: String
-    PHONE: String 
+    PHONE: String
     CIDADE: Int
   }
 
-  # Input para atualizar usuário (todos opcionais)
   input UpdateUsuario {
     FULLNAME: String
     USERNAME: String
@@ -30,7 +28,13 @@ export const typeDefs = gql`
     CIDADE: Int
   }
 
+  type AuthProps {
+    token: String!
+    usuario: Usuario!
+  }
+
   type Mutation {
+    login(username: String!, password: String!): AuthProps!
     createUsuario(input: CreateUsuario!): Usuario
     updateUsuario(id: Int!, input: UpdateUsuario!): Usuario
   }
