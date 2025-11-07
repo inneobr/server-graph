@@ -1,0 +1,29 @@
+type Usuario {
+  ID: Int!
+  FULLNAME: String!
+  USERNAME: String!
+  EMAIL: String
+  PHONE: String
+  CIDADE: Int
+}
+
+input CreateUsuario {
+  FULLNAME: String!
+  USERNAME: String!
+  PASSWORD: String!
+  EMAIL: String
+  PHONE: String
+  CIDADE: Int
+}
+
+type Query {
+  usuario(id: Int!): Usuario!
+  usuarios: [Usuario!]
+  searchUsuario(filter: String!): [Usuario!] 
+}
+
+type Mutation {
+  deleteUsuario(id: Int!): Boolean
+  createUsuario(usuario: CreateUsuario!): Usuario!
+  updateUsuario(id: Int!, usuario: CreateUsuario!): Usuario!
+}

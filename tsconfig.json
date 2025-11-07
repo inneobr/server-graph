@@ -1,39 +1,10 @@
 {
 	"compilerOptions": {
-		"target": "es2020",
-		"lib": [
-			"es5",
-			"es6",
-			"ES2020"
-		],
-		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true,
-		"module": "commonjs",
-		"moduleResolution": "node",
-		"resolveJsonModule": true,
-		"allowJs": true,
-		"outDir": "./dist",
-		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
-		"strict": true,
-		"noImplicitAny": true,
-		"strictPropertyInitialization": false,
-		"paths": {
-			"@/*": [
-				"./*"
-			]
-		}
-	},
-	"include": [
-		"src/**/*",
-		"src/routes.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"dist",
-		".env"
-	],
-	"ts-node": {
-		"files": true
+	  "target": "ES2022",
+	  "module": "CommonJS",
+	  "moduleResolution": "node",
+	  "esModuleInterop": true,
+	  "resolveJsonModule": true,
+	  "strict": true
 	}
-}
+  }
